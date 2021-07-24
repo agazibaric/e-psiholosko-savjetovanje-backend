@@ -16,6 +16,7 @@ public class Endpoints {
    public static final String PATIENT_MEETING_ID = "/meetings/{id}";
    public static final String PATIENT_MEETING_TERMINS = "/meetings/{id}/termins";
    public static final String PATIENT_REVIEWS = "/reviews";
+   public static final String PATIENT_MEETING_REQUEST = "/meetingRequest";
 
    // DoctorController
    public static final String DOCTOR_ROOT = API_PREFIX + "/doctor";
@@ -24,6 +25,8 @@ public class Endpoints {
    public static final String DOCTOR_MEETING_ID = "/meetings/{id}";
    public static final String DOCTOR_MEETING_TERMINS = "/meetings/{id}/termins";
    public static final String DOCTOR_REVIEWS = "/reviews";
+   public static final String DOCTOR_ACCEPT_MEETING_REQUEST = "/acceptMeetingRequest";
+   public static final String DOCTOR_CLOSE_MEETING = "/closeMeeting";
 
    // ServiceController
    public static final String SERVICE_ROOT = API_PREFIX + "/service";
