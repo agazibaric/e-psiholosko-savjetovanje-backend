@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import com.epsih.model.meeting.MeetingRequest;
 import com.epsih.model.user.Doctor;
 import com.epsih.model.meeting.Question;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -46,8 +47,15 @@ public class BusinessService {
    @JsonIgnoreProperties("services")
    private BusinessCategory category;
 
-   @OneToMany
+   @ManyToMany(fetch = FetchType.LAZY)
+   @JoinTable(name = "service_question",
+      joinColumns = @JoinColumn(name = "fk_service"),
+      inverseJoinColumns = @JoinColumn(name = "fk_question"))
    @JsonIgnore
    private List<Question> questions;
+
+   @OneToMany(fetch = FetchType.LAZY, mappedBy = "service", cascade = CascadeType.ALL)
+   @JsonIgnore
+   private List<MeetingRequest> meetingRequests;
 
 }

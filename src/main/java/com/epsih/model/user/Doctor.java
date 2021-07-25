@@ -24,15 +24,17 @@ public class Doctor {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @Column(name = "pk_doctor")
    private Long id;
 
    @OneToOne
    @JoinColumn(name = "fk_user", referencedColumnName = "pk_user")
    private User user;
 
+   @Column(nullable = true)
    private String biography;
 
-   @ManyToMany(fetch = FetchType.LAZY)
+   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    @JoinTable(name = "doctor_service",
       joinColumns = @JoinColumn(name = "fk_doctor"),
       inverseJoinColumns = @JoinColumn(name = "fk_service"))

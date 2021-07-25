@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RestController
 @RequestMapping(Endpoints.SERVICE_ROOT)
-public class ServiceContoller {
+public class ServiceController {
 
 	private final BusinessServiceService service;
 

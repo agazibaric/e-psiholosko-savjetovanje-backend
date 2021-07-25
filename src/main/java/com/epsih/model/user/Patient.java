@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.epsih.model.meeting.Meeting;
+import com.epsih.model.meeting.MeetingRequest;
 import com.epsih.model.meeting.Review;
 import com.epsih.model.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,6 +23,7 @@ public class Patient {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @Column(name = "pk_patient")
    private Long id;
 
    @OneToOne
@@ -33,6 +35,10 @@ public class Patient {
    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient", cascade = CascadeType.ALL)
    @JsonIgnore
    private List<Meeting> meetings;
+
+   @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient", cascade = CascadeType.ALL)
+   @JsonIgnore
+   private List<MeetingRequest> meetingRequests;
 
    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient", cascade = CascadeType.ALL)
    @JsonIgnore
