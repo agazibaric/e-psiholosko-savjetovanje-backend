@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class Meeting {
 
    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,15 +51,19 @@ public class Meeting {
    @JsonIgnore
    private BusinessService service;
 
+   @Column
    private String description;
 
    @OneToMany(mappedBy = "meeting", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
    @JsonIgnore
    private List<Message> messages;
 
-   @OneToOne
-   @JoinColumn(nullable = true, name = "fk_meeting_request")
+   @OneToOne(cascade = CascadeType.MERGE)
+   @JoinColumn(name = "fk_meeting_request")
    @JsonIgnore
    private MeetingRequest meetingRequest;
+
+   @NotNull
+   private Boolean isActive;
 
 }

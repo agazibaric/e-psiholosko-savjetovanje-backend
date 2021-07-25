@@ -24,7 +24,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RestController
 @RequestMapping(Endpoints.CATEGORY_ROOT)
-public class CategoryContoller {
+public class CategoryController {
 
 	private final BusinessCategoryService service;
 

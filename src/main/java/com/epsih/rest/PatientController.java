@@ -1,17 +1,17 @@
 package com.epsih.rest;
 
 import com.epsih.constants.Endpoints;
+import com.epsih.dto.MeetingRequestDto;
 import com.epsih.model.meeting.Meeting;
+import com.epsih.model.meeting.MeetingRequest;
 import com.epsih.model.user.Patient;
 import com.epsih.model.meeting.Review;
 import com.epsih.model.meeting.Termin;
 import com.epsih.service.PatientService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @AllArgsConstructor
@@ -44,6 +44,12 @@ public class PatientController {
    @GetMapping(Endpoints.PATIENT_REVIEWS)
    public List<Review> getMyReviews() {
       return patientService.getMyReviews();
+   }
+
+   @PostMapping(Endpoints.PATIENT_MEETING_REQUEST)
+   public MeetingRequest postMeetingRequest(@RequestBody @Valid MeetingRequestDto meetingRequestDto) {
+      System.out.println(meetingRequestDto);
+      return patientService.addMeetingRequest(meetingRequestDto);
    }
 
 }
