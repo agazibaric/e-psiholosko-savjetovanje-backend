@@ -4,6 +4,7 @@ import com.epsih.constants.AuthorityConstants;
 import com.epsih.dto.*;
 import com.epsih.exceptions.BadRequestException;
 import com.epsih.exceptions.UserException;
+import com.epsih.model.mail.NotificationEmail;
 import com.epsih.model.user.*;
 import com.epsih.repository.*;
 import com.epsih.security.jwt.TokenProvider;
@@ -34,6 +35,7 @@ public class AuthService {
    private final UserService userService;
    private final PatientRepository patientRepository;
    private final DoctorRepository doctorRepository;
+   private final MailService mailService;
 
    public String authenticate(LoginDto loginDto) {
       UsernamePasswordAuthenticationToken authenticationToken =
@@ -72,11 +74,15 @@ public class AuthService {
          .diagnosis("")
          .build();
 
-      // userRepository.save(user);
       patientRepository.save(patient);
 
       String token = generateActivationToken(user);
-      // TODO: send activation mail with token
+      String activationLink = "http://localhost:8080/api/activate/" + token;
+      mailService.sendMail(NotificationEmail.builder()
+      .recipient(user.getEmail())
+      .subject("Activate E-psychological Counseling Account")
+      .body("To activate your E-psychological Counseling account click on this link: " + activationLink)
+      .build());
    }
 
    public void changePassword(ChangePasswordDto changePasswordDto) {
@@ -140,7 +146,12 @@ public class AuthService {
       doctorRepository.save(doctor);
 
       String token = generateActivationToken(user);
-      // TODO: send activation mail with token
+      String activationLink = "http://localhost:8080/api/activate/" + token;
+      mailService.sendMail(NotificationEmail.builder()
+         .recipient(user.getEmail())
+         .subject("Activate E-psychological Counseling Doctor Account")
+         .body("To activate your E-psychological Counseling account click on this link: " + activationLink)
+         .build());
    }
 
    //////////////////////////////////
