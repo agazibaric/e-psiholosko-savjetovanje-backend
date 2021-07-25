@@ -1,19 +1,11 @@
 package com.epsih.service;
 
 import com.epsih.constants.AuthorityConstants;
-import com.epsih.dto.ChangePasswordDto;
-import com.epsih.dto.LoginDto;
-import com.epsih.dto.RegisterDto;
-import com.epsih.dto.ResetPasswordDto;
+import com.epsih.dto.*;
 import com.epsih.exceptions.BadRequestException;
 import com.epsih.exceptions.UserException;
-import com.epsih.model.user.ActivationToken;
-import com.epsih.model.user.ResetPasswordToken;
-import com.epsih.model.user.User;
-import com.epsih.repository.ActivationTokenRepository;
-import com.epsih.repository.AuthorityRepository;
-import com.epsih.repository.ResetPasswordTokenRepository;
-import com.epsih.repository.UserRepository;
+import com.epsih.model.user.*;
+import com.epsih.repository.*;
 import com.epsih.security.jwt.TokenProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,6 +32,8 @@ public class AuthService {
    private final PasswordEncoder passwordEncoder;
    private final AuthorityRepository authorityRepository;
    private final UserService userService;
+   private final PatientRepository patientRepository;
+   private final DoctorRepository doctorRepository;
 
    public String authenticate(LoginDto loginDto) {
       UsernamePasswordAuthenticationToken authenticationToken =
@@ -73,7 +67,13 @@ public class AuthService {
          .activated(false)
          .build();
 
-      userRepository.save(user);
+      Patient patient = Patient.builder()
+         .user(user)
+         .diagnosis("")
+         .build();
+
+      // userRepository.save(user);
+      patientRepository.save(patient);
 
       String token = generateActivationToken(user);
       // TODO: send activation mail with token
@@ -112,8 +112,35 @@ public class AuthService {
 
       User user = userService.getUserWithAuthorities().get();
       user.setPassword(passwordEncoder.encode(resetPasswordDto.getNewPassword()));
-      System.out.println(user);
       userRepository.save(user);
+   }
+
+   public void registerDoctor(DoctorDto doctorDto) {
+      RegisterDto registerDto = doctorDto.getRegisterDto();
+      if (userRepository.findByUsername(registerDto.getUsername()).isPresent())
+         throw new UserException("User with given username already exists");
+
+      User user = User.builder()
+         .email(registerDto.getEmail())
+         .firstname(registerDto.getFirstname())
+         .lastname(registerDto.getLastname())
+         .username(registerDto.getUsername())
+         .phoneNumber(registerDto.getPhoneNumber())
+         .password(passwordEncoder.encode(registerDto.getPassword()))
+         .authorities(new HashSet<>(Collections.singletonList(authorityRepository.getOne(AuthorityConstants.ROLE_DOCTOR))))
+         .activated(false)
+         .build();
+
+      Doctor doctor = Doctor.builder()
+         .user(user)
+         .profession(doctorDto.getProfession())
+         .position(doctorDto.getPosition())
+         .build();
+
+      doctorRepository.save(doctor);
+
+      String token = generateActivationToken(user);
+      // TODO: send activation mail with token
    }
 
    //////////////////////////////////

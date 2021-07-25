@@ -22,7 +22,7 @@ public class PatientController {
    private final PatientService patientService;
 
    @GetMapping(Endpoints.PATIENT_ME)
-   public Patient getCurrentDoctor() {
+   public Patient getCurrentPatient() {
       return patientService.getCurrentPatient();
    }
 
@@ -48,7 +48,6 @@ public class PatientController {
 
    @PostMapping(Endpoints.PATIENT_MEETING_REQUEST)
    public MeetingRequest postMeetingRequest(@RequestBody @Valid MeetingRequestDto meetingRequestDto) {
-      System.out.println(meetingRequestDto);
       return patientService.addMeetingRequest(meetingRequestDto);
    }
 

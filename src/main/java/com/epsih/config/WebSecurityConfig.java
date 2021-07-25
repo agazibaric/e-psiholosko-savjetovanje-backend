@@ -97,6 +97,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          .antMatchers("/api/activate/*").permitAll()
 
          .antMatchers("/api/admin").hasAuthority(AuthorityConstants.ROLE_ADMIN)
+         .antMatchers(Endpoints.AUTH_REGISTER_DOCTOR).hasAuthority(AuthorityConstants.ROLE_ADMIN)
 
          .antMatchers(HttpMethod.GET, "/api/category").permitAll()
          .antMatchers(HttpMethod.GET, "/api/service").permitAll()

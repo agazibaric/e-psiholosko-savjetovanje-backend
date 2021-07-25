@@ -7,10 +7,10 @@ import javax.persistence.*;
 import com.epsih.model.meeting.Meeting;
 import com.epsih.model.meeting.MeetingRequest;
 import com.epsih.model.meeting.Review;
-import com.epsih.model.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 @Table(name = "patient")
 public class Patient {
 
@@ -26,7 +27,7 @@ public class Patient {
    @Column(name = "pk_patient")
    private Long id;
 
-   @OneToOne
+   @OneToOne(cascade = CascadeType.ALL)
    @JoinColumn(name = "fk_user", referencedColumnName = "pk_user")
    private User user;
 
