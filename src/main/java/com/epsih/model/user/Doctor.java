@@ -8,10 +8,10 @@ import javax.persistence.*;
 import com.epsih.model.meeting.Meeting;
 import com.epsih.model.meeting.Review;
 import com.epsih.model.service.BusinessService;
-import com.epsih.model.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 @Table(name = "doctor")
 public class Doctor {
 
@@ -27,12 +28,15 @@ public class Doctor {
    @Column(name = "pk_doctor")
    private Long id;
 
-   @OneToOne
+   @OneToOne(cascade = CascadeType.ALL)
    @JoinColumn(name = "fk_user", referencedColumnName = "pk_user")
    private User user;
 
    @Column(nullable = true)
-   private String biography;
+   private String profession;
+
+   @Column(nullable = true)
+   private String position;
 
    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    @JoinTable(name = "doctor_service",

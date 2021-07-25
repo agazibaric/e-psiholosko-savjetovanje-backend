@@ -5,8 +5,7 @@ import static org.springframework.http.HttpStatus.OK;
 import javax.validation.Valid;
 
 import com.epsih.constants.Endpoints;
-import com.epsih.dto.ChangePasswordDto;
-import com.epsih.dto.ResetPasswordDto;
+import com.epsih.dto.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.epsih.dto.LoginDto;
-import com.epsih.dto.RegisterDto;
 import com.epsih.security.jwt.JWTFilter;
 import com.epsih.security.jwt.JWTToken;
 import com.epsih.service.AuthService;
@@ -46,6 +43,12 @@ public class AuthController {
    @PostMapping(Endpoints.AUTH_REGISTER)
    public ResponseEntity<Void> register(@Valid @RequestBody RegisterDto registerDto) {
       authService.register(registerDto);
+      return ResponseEntity.ok().build();
+   }
+
+   @PostMapping(Endpoints.AUTH_REGISTER_DOCTOR)
+   public ResponseEntity<Void> registerDoctor(@Valid @RequestBody DoctorDto doctorDto) {
+      authService.registerDoctor(doctorDto);
       return ResponseEntity.ok().build();
    }
 
